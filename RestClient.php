@@ -1,13 +1,28 @@
 <?php
 
 /**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
+
+/**
  * Simple client for testing
  */
 class RestClient
 {
 
-	protected $urlBase = '';
-	protected $httpCode = null; //code of the last response
+	//---
+	protected $apiKey = null;
+	protected $sharedKey = null;
+	protected $urlBase = null;
+
+	public function __construct($urlBase, $apiKey, $sharedKey)
+	{
+		$this->urlBase = $urlBase;
+		$this->apiKey = $apiKey;
+		$this->sharedKey = $sharedKey;
+	}
 
 	public function get($url, $params = array('format' => 'json'))
 	{
@@ -34,15 +49,29 @@ class RestClient
 		return $result = http_build_query($params);
 	}
 
+	public function getHttpCode()
+	{
+		return $this->httpCode;
+	}
+
 	public function httpRequest($url, $postfields = array(), $method = "GET")
 	{
+		$postfields = array_merge($postfields, array('format' => 'json'));
+
+		foreach ($postfields as $key => $value) {
+			if (is_null($value)) {
+				unset($postfields[$key]);
+			}
+		}
+
 		$url = $this->urlBase . $url;
 
 		$ci = curl_init();
 		/* Curl settings */
-		curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ci, CURLOPT_HEADER, false);
 
+		curl_setopt($ci, CURLOPT_HEADER, false);
+		curl_setopt($ci, CURLOPT_HTTPHEADER, array('X-BRP-App: ' . $this->encrypt($postfields))); //set custom header
+		curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
 
 		$postfields = $this->_convertParams($postfields);
 		switch ($method) {
@@ -56,6 +85,9 @@ class RestClient
 				}
 				break;
 			case 'DELETE':
+				if (!empty($postfields)) {
+					curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
+				}
 				curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
 				break;
 			case 'PUT':
@@ -72,12 +104,7 @@ class RestClient
 		$response = curl_exec($ci);
 		$this->httpCode = curl_getinfo($ci, CURLINFO_HTTP_CODE);
 		curl_close($ci);
-		return $response;
-	}
-
-	public function getHttpCode()
-	{
-		return $this->httpCode;
+		return (array) json_decode($response);
 	}
 
 }

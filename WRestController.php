@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 Yii::import("ext." . basename(__DIR__) . '.actions.*');
 Yii::import("ext." . basename(__DIR__) . '.behaviors.*');
@@ -10,58 +15,34 @@ abstract class WRestController extends CController
 	 *
 	 * @var WRestResponse
 	 */
-	protected $response = null;
+	protected $_response = null;
 
 	/**
 	 * @var CHttpRequest
 	 */
-	protected $request = null;
-	protected $user = null;
-	protected $modelName = "";
-	protected $availableFormats = array('json');
+	protected $_modelName = "";
+	protected $_availableFormats = array('json');
 
 	/**
 	 * Default response format
 	 * either 'json' or 'xml'
 	 */
-	private $format = 'json';
-
-	public function init()
-	{
-//		Yii::app()->setComponents(array(
-//			'class' => 'ext.wrest.WHttpRequest',
-//				)
-//		);
-//		$component = Yii::createComponent(array(
-//					'class' => 'ext.wrest.WHttpRequest',
-//				));
-//		Yii::app()->setComponent('request', $component);
-		return parent::init();
-	}
-
+	private $_format = 'json';
+	private $_formatAttributeName = 'format';
+	
 	public function __construct($id, $module = null)
 	{
-		//import rest actions
+		$this->_modelName = ucfirst($this->_modelName);
 
+		Yii::app()->setComponent('request', Yii::createComponent(array(
+					'class' => 'ext.wrest.WHttpRequest',
+		)));
 
-		$this->request = Yii::app()->request;
-		$this->modelName = ucfirst($this->modelName);
-		$this->user = Yii::app()->user;
+		Yii::app()->request->parseJsonParams();
+		Yii::app()->request->getAllRestParams();
 
-		$this->request->parseJsonParams();
-		$params = $this->request->getAllRestParams();
-
-//		if (isset($params['access_token'])) {
-//			$userToken = $params['access_token'];
-//			$user = ApiUser::model()->findByToken($userToken);
-//			if ($user) {
-//				$this->user->setId($user->user_id);
-//				$this->user->setState('token', $userToken);
-//			}
-//		}
-
-		$this->_setFormat();
-		$this->response = WRestResponse::factory($this->format);
+		$this->setFormat();
+		$this->_response = WRestResponse::factory($this->_format);
 
 		parent::__construct($id, $module);
 	}
@@ -72,7 +53,7 @@ abstract class WRestController extends CController
 		return parent::beforeAction($action);
 	}
 
-	public function _createModel($attributes, $scenario = '')
+	public function createModel($attributes, $scenario = '')
 	{
 		$model = $this->getModel($scenario);
 		$model->attributes = $attributes;
@@ -86,18 +67,13 @@ abstract class WRestController extends CController
 	 * @param string $body
 	 * @param type $content_type
 	 */
-	public function _sendResponse($status = 200, $bodyParams = array())
+	public function sendResponse($status = 200, $bodyParams = array())
 	{
 		if (empty($bodyParams) && (($this->action->id != 'list' && $this->action->id != 'get') || $status != 200)) {
-			$bodyParams = CArray::merge($bodyParams, $this->response->getErrorMessage($status));
+			$bodyParams = CArray::merge($bodyParams, $this->_response->getErrorMessage($status));
 		}
-		echo $this->response->setHeaders($status)->setParams($bodyParams)->send();
+		echo $this->_response->setHeaders($status)->setParams($bodyParams)->send();
 		Yii::app()->end();
-	}
-
-	protected function checkAuth()
-	{
-		return true;
 	}
 
 	protected function verifyRequest()
@@ -105,15 +81,16 @@ abstract class WRestController extends CController
 		return true;
 	}
 
-	private function _setFormat()
+	public function setFormat($format = null)
 	{
-		//get format from one of requests type
-		$format = $this->request->getParam('format');
-		$format = (empty($format)) ? $this->request->getPut('format') : $format;
-		$format = (empty($format)) ? $this->request->getDelete('format') : $format;
-
-		if ($format && in_array($format, $this->availableFormats)) {
-			$this->format = $format;
+		if ($format && in_array($format, $this->_availableFormats)) {
+			$this->_format = $format;
+		}
+		if (!$this->_format) {
+			//get format from one of requests type
+			$format = Yii::app()->request->getParam($this->_formatAttributeName);
+			$format = (empty($format)) ? Yii::app()->request->getPut($this->_formatAttributeName) : $format;
+			$format = (empty($format)) ? Yii::app()->request->getDelete($this->_formatAttributeName) : $format;
 		}
 	}
 
@@ -123,16 +100,16 @@ abstract class WRestController extends CController
 	public function getModel($scenario = '')
 	{
 		$id = Yii::app()->request->getParam('id');
-		$modelName = ucfirst($this->modelName);
+		$modelName = ucfirst($this->_modelName);
 
-		if (empty($this->modelName) && class_exists($modelName)) {
-			$this->_sendResponse(400);
+		if (empty($this->_modelName) && class_exists($modelName)) {
+			$this->sendResponse(400);
 		}
 
 		if ($id) {
 			$model = $modelName::model()->findByPk($id);
 			if (is_null($model)) {
-				$this->_sendResponse(400);
+				$this->sendResponse(400);
 			}
 		} else {
 			$model = new $modelName();
@@ -144,7 +121,7 @@ abstract class WRestController extends CController
 
 	public function getRequest()
 	{
-		return $this->request;
+		return Yii::app()->request;
 	}
 
 }

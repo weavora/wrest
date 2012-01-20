@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class UpdateAction extends CAction
 {
@@ -7,20 +12,20 @@ class UpdateAction extends CAction
 
 	public function run()
 	{
-		$requestAttributes = $this->controller->request->getAllRestParams();
+		$requestAttributes = Yii::app()->request->getAllRestParams();
 
 		$model = $this->controller->getModel($this->scenario);
 
-		$paramsList = $model->getUpdateParams();
+		$paramsList = $model->getUpdateAttributes();
 
 		$attributes = array_intersect_key($requestAttributes, $paramsList);
 
 		$model->attributes = $attributes;
 
 		if ($model->save()) {
-			$this->controller->_sendResponse(200, $model->getParams());
+			$this->controller->sendResponse(200, $model->getAllAttributes());
 		} else {
-			$this->controller->_sendResponse(403, array('errors' => $model->getErrors()));
+			$this->controller->sendResponse(403, array('errors' => $model->getErrors()));
 		}
 	}
 

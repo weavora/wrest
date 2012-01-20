@@ -1,8 +1,13 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 abstract class WRestResponse
 {
-	protected $body = '';
+	protected $_body = '';
 
 	public abstract function getContentType();
 
@@ -10,7 +15,7 @@ abstract class WRestResponse
 
 	public function send()
 	{
-		return $this->body;
+		return $this->_body;
 	}
 
 	/**

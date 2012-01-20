@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class WListAction extends CAction
 {
@@ -19,20 +24,20 @@ class WListAction extends CAction
 		}
 
 		$model = $this->controller->getModel();
-		$c->limit = (int)(($limit = $this->controller->request->getParam($this->limit)) ? $limit : -1);
-		$page = (int)$this->controller->request->getParam($this->page) - 1;
+		$c->limit = (int)(($limit = Yii::app()->request->getParam($this->limit)) ? $limit : -1);
+		$page = (int)Yii::app()->request->getParam($this->page) - 1;
 		$c->offset = ($offset = $limit * $page) ? $offset : 0;
-		$c->order = ($order = $this->controller->request->getParam($this->order)) ? $order : $model->getMetaData()->tableSchema->primaryKey;
+		$c->order = ($order = Yii::app()->request->getParam($this->order)) ? $order : $model->getMetaData()->tableSchema->primaryKey;
 
 		$models = $model->findAll($c);
 		$result = array();
 		if ($models) {
 			foreach ($models as $item) {
-				$result[] = $item->getParams();
+				$result[] = $item->getAllAttributes();
 			}
 		}
 
-		$this->controller->_sendResponse(200, $result);
+		$this->controller->sendResponse(200, $result);
 	}
 
 }

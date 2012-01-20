@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class JsonResponse extends WRestResponse{
 
@@ -9,7 +14,7 @@ class JsonResponse extends WRestResponse{
 
 	public function setParams($params = array())
 	{
-		$this->body = CJSON::encode($params);
+		$this->_body = CJSON::encode($params);
 		return $this;
 	}
 }

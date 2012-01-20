@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class WCreateAction extends CAction
 {
@@ -7,19 +12,19 @@ class WCreateAction extends CAction
 
 	public function run()
 	{
-		$requestAttributes = $this->controller->request->getAllRestParams();
+		$requestAttributes = Yii::app()->request->getAllRestParams();
 
 		$model = $this->controller->getModel($this->scenario);
 
-		$paramsList = $model->getCreateParams();
+		$paramsList = $model->getCreateAttributes();
 		$attributes = array_intersect_key($requestAttributes, $paramsList);
-		
+
 		$model->attributes = $attributes;
 
 		if ($model->save()) {
-			$this->controller->_sendResponse(200, $model->getParams());
+			$this->controller->sendResponse(200, $model->getParams());
 		} else {
-			$this->controller->_sendResponse(500, array('errors' => $model->getErrors()));
+			$this->controller->sendResponse(500, array('errors' => $model->getErrors()));
 		}
 	}
 

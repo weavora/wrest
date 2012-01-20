@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class WGetAction extends CAction
 {
@@ -6,7 +11,7 @@ class WGetAction extends CAction
 	public function run()
 	{
 		$model = $this->controller->getModel();
-		$this->controller->_sendResponse(200, $model->getParams());
+		$this->controller->sendResponse(200, $model->getAllAttributes());
 	}
 
 }

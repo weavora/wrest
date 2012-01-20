@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class WDeleteAction extends CAction
 {
@@ -7,9 +12,9 @@ class WDeleteAction extends CAction
 	{
 		$model = $this->controller->getModel();
 		if ($model->delete()) {
-			$this->controller->_sendResponse(200, array('id' => $model->id));
+			$this->controller->sendResponse(200, array('id' => $model->id));
 		} else {
-			$this->controller->_sendResponse(500);
+			$this->controller->sendResponse(500);
 		}
 	}
 

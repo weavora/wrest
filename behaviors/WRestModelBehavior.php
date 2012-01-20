@@ -1,20 +1,25 @@
 <?php
+/**
+ * @author Weavora Team <hello@weavora.com>
+ * @link http://weavora.com
+ * @copyright Copyright (c) 2011 Weavora LLC
+ */
 
 class WRestModelBehavior extends CActiveRecordBehavior
 {
 
-	public function getParams()
+	public function getAllAttributes()
 	{
 		$owner = $this->getOwner();
 		return $owner->getAttributes();
 	}
 
-	public function getCreateParams()
+	public function getCreateAttributes()
 	{
 		return $this->_getAttributesByScenario('insert');
 	}
 
-	public function getUpdateParams()
+	public function getUpdateAttributes()
 	{
 		return $this->_getAttributesByScenario('update');
 	}
