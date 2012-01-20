@@ -70,7 +70,6 @@ class RestClient
 		/* Curl settings */
 
 		curl_setopt($ci, CURLOPT_HEADER, false);
-		curl_setopt($ci, CURLOPT_HTTPHEADER, array('X-BRP-App: ' . $this->encrypt($postfields))); //set custom header
 		curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
 
 		$postfields = $this->_convertParams($postfields);

@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2011 Weavora LLC
  */
 
-class UpdateAction extends CAction
+class WUpdateAction extends CAction
 {
 
 	public $scenario = '';
@@ -18,7 +18,12 @@ class UpdateAction extends CAction
 
 		$paramsList = $model->getUpdateAttributes();
 
-		$attributes = array_intersect_key($requestAttributes, $paramsList);
+		$attributes = array();
+		foreach ($paramsList as $key) {
+			if (isset($requestAttributes[$key])) {
+				$attributes[$key] = $requestAttributes[$key];
+			}
+		}
 
 		$model->attributes = $attributes;
 

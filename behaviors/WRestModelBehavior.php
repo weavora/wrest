@@ -31,7 +31,7 @@ class WRestModelBehavior extends CActiveRecordBehavior
 		$attributes = array();
 
 		foreach ($validators as $validator){
-			$attributes = CArray::merge($attributes, $validator->attributes);
+			$attributes = array_merge($attributes, $validator->attributes);
 		}
 		return $attributes;
 	}
