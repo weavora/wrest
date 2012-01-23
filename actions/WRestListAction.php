@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2011 Weavora LLC
  */
 
-class WListAction extends CAction
+class WRestListAction extends CAction
 {
 
 	public $filterBy = array();

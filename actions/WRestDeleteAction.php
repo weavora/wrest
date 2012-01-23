@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2011 Weavora LLC
  */
 
-class WDeleteAction extends CAction
+class WRestDeleteAction extends CAction
 {
 
 	public function run()

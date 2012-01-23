@@ -10,6 +10,13 @@ class WHttpRequest extends CHttpRequest
 
 	private $_restParams = array();
 
+	/**
+	 * Default response format
+	 * either 'json' or 'xml'
+	 */
+	private $_format = 'json';
+	private $_formatAttributeName = 'format';
+
 	public function getPut($name, $defaultValue = null)
 	{
 		if ($this->_restParams === array())
@@ -77,6 +84,24 @@ class WHttpRequest extends CHttpRequest
 			$param = isset($this->_restParams[$name]) ? $this->_restParams[$name] : null;
 		
 		return $param ? $param : $defaultValue;
+	}
+
+	public function setFormat($format = null)
+	{
+		if ($format && in_array($format, $this->_availableFormats)) {
+			$this->_format = $format;
+		}
+		if (!$this->_format) {
+			//get format from one of requests type
+			$format = Yii::app()->request->getParam($this->_formatAttributeName);
+			$format = (empty($format)) ? Yii::app()->request->getPut($this->_formatAttributeName) : $format;
+			$format = (empty($format)) ? Yii::app()->request->getDelete($this->_formatAttributeName) : $format;
+			$this->_format = $format;
+		}
+	}
+
+	public function getFormat(){
+		return $this->_format;
 	}
 
 }

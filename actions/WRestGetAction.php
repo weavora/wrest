@@ -5,7 +5,7 @@
  * @copyright Copyright (c) 2011 Weavora LLC
  */
 
-class WGetAction extends CAction
+class WRestGetAction extends CAction
 {
 
 	public function run()

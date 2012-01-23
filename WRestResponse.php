@@ -8,12 +8,13 @@
 abstract class WRestResponse
 {
 	protected $_body = '';
+	protected $_status = 200;
 
-	public abstract function getContentType();
+	protected abstract function _getContentType();
 
 	public abstract function setParams($params = array());
 
-	public function send()
+	public function getBody()
 	{
 		return $this->_body;
 	}
@@ -34,22 +35,15 @@ abstract class WRestResponse
 	 * @param string $status
 	 * @return WRestResponse
 	 */
-	public function setHeaders($status)
+	public function setStatus($status)
 	{
-		// set the status
-		$statusHeader = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
-		header($statusHeader);
-		// and the content type
-		header('Content-type: ' . $this->getContentType());
+		$this->_status = $status;
 
 		return $this;
 	}
 
 	protected function _getStatusCodeMessage($status, $isCode = true)
 	{
-		// these could be stored in a .ini file and loaded
-		// via parse_ini_file()... however, this will suffice
-		// for an example
 		$codes = Array(
 			200 => array('OK' => 'OK'),
 			400 => array('Bad Request' => 'Bad Request'),
@@ -74,6 +68,19 @@ abstract class WRestResponse
 			'title' => $this->_getStatusCodeMessage($status),
 			'message' => $this->_getStatusCodeMessage($status, false),
 		);
+	}
+
+	public function getHeaders(){
+		$headers = array();
+		
+		$status = $this->_status;
+		// set the status
+		$statusHeader = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
+		$headers[] = $statusHeader;
+		// and the content type
+		$headers[] = 'Content-type: ' . $this->_getContentType();
+
+		return $headers;
 	}
 
 }

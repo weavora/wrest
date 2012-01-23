@@ -7,7 +7,7 @@
 
 class JsonResponse extends WRestResponse{
 
-	public function getContentType()
+	protected function _getContentType()
 	{
 		return "application/json";
 	}
