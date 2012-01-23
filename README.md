@@ -152,6 +152,27 @@ class UserController extends WRestController{
 }
 ```
 
+REST API call samples
+=======================
+
+If you use RestClient class, then you can call api next way:
+
+```php
+<?php
+// apiCallSample.php
+
+require 'RestClient.php';
+$client = new RestClient('http://api_url/api/', '', '');
+
+$response = $client->get('user'); //return the list of objects {{id:1, username:'Jack'}, {id:2, username:'Nick'}}
+$response = $client->get('user/1'); //return single object with requested id, for example {id:1, username:'Jack'}
+$response = $client->update('user/1', array('username' => 'new user name')); //update user data
+$response = $client->delete('user/1'); //delete user with requested id
+$response = $client->post('user', array('username'=>'name', 'password' => 'pass', 'email' => 'email@email.com'));//create new user
+
+```
+
+
 
 Custom action sample
 --------------------

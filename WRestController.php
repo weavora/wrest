@@ -16,7 +16,6 @@ abstract class WRestController extends CController
 	 */
 	public $response = null;
 	protected $_modelName = "";
-	protected $_availableFormats = array('json');
 
 	public function init(){
 		$this->_modelName = ucfirst($this->_modelName);
