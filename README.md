@@ -57,7 +57,7 @@ return array(
 
 ```php
 <?php
-// User.php
+// /models/User.php
 class User extends CActiveRecord{
 	...
 	public function behaviors()
@@ -84,9 +84,8 @@ Usage
 1) Create model, determine relations, behavior etc.
 
 ```php
-// /models/User.php
 <?php
-
+// /models/User.php
 class User extends CActiveRecord
 {
 
