@@ -84,7 +84,7 @@ Usage
 1) Create model, determine relations, behavior etc.
 
 ```php
-// User.php
+// /models/User.php
 <?php
 
 class User extends CActiveRecord
@@ -167,12 +167,19 @@ class UserController extends WRestController{
 	
 	...
 	
-	public function actionUpdate()
+	public function actionFriends($id)
 	{
-		$this->sendResponse(200, array(
-			'method' => 'put',
-			'action' => 'update',
-		));
+		$user = User::model()->findByPk($id);
+		$friends = $user->findFriends();
+		
+		if(empty($user))
+			$this->sendResponse(404);
+			
+		$users = array();
+		foreach($friends as $friend){
+			$users = $friend->getAllAttributes();
+		}
+		$this->sendResponse(200, $users);
 	}
 	
 	...
@@ -229,16 +236,16 @@ class UserController extends WRestController
 	{
 		return array(
 			'list' => array(
-				'class' => 'ListAction',
+				'class' => 'WRestListAction',
 				'filterBy' => array(
 					'account_id' => 'account_id',
 				),
 				'limit' => 'limit',
 			),
-			'delete' => 'DeleteAction',
-			'get' => 'GetAction',
-			'create' => 'CreateAction',
-			'update' => 'UpdateAction',
+			'delete' => 'WRestDeleteAction',
+			'get' => 'WRestGetAction',
+			'create' => 'WRestCreateAction',
+			'update' => 'WRestUpdateAction',
 		);
 	}
 }
