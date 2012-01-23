@@ -8,9 +8,9 @@
 abstract class WRestResponse
 {
 	protected $_body = '';
-	protected $_status = 200;
+	protected $status = 200;
 
-	protected abstract function _getContentType();
+	public abstract function getContentType();
 
 	public abstract function setParams($params = array());
 
@@ -37,12 +37,12 @@ abstract class WRestResponse
 	 */
 	public function setStatus($status)
 	{
-		$this->_status = $status;
+		$this->status = $status;
 
 		return $this;
 	}
 
-	protected function _getStatusCodeMessage($status, $isCode = true)
+	public function getStatusCodeMessage($status, $isCode = true)
 	{
 		$codes = Array(
 			200 => array('OK' => 'OK'),
@@ -50,7 +50,7 @@ abstract class WRestResponse
 			401 => array('Unauthorized' => 'You must be authorized to view this page.'),
 			402 => array('Payment Required' => 'Payment Required'),
 			403 => array('Forbidden' => 'Forbidden'),
-			404 => array('Not Found' => 'The requested URL ' . Yii::app()->request->getRequestUri() . ' was not found.'),
+			404 => array('Not Found' => 'The requested URL was not found.'),
 			500 => array('Internal Server Error' => 'The server encountered an error processing your request.'),
 			501 => array('Not Implemented' => 'The requested method is not implemented.'),
 		);
@@ -65,22 +65,26 @@ abstract class WRestResponse
 	public function getErrorMessage($status){
 		return array(
 			'code' => $status,
-			'title' => $this->_getStatusCodeMessage($status),
-			'message' => $this->_getStatusCodeMessage($status, false),
+			'title' => $this->getStatusCodeMessage($status),
+			'message' => $this->getStatusCodeMessage($status, false),
 		);
 	}
 
 	public function getHeaders(){
 		$headers = array();
 		
-		$status = $this->_status;
+		$status = $this->status;
 		// set the status
-		$statusHeader = 'HTTP/1.1 ' . $status . ' ' . $this->_getStatusCodeMessage($status);
+		$statusHeader = 'HTTP/1.1 ' . $status . ' ' . $this->getStatusCodeMessage($status);
 		$headers[] = $statusHeader;
 		// and the content type
-		$headers[] = 'Content-type: ' . $this->_getContentType();
+		$headers[] = 'Content-type: ' . $this->getContentType();
 
 		return $headers;
+	}
+
+	public function getStatus(){
+		return $this->status;
 	}
 
 }

@@ -14,25 +14,24 @@ abstract class WRestController extends CController
 	/**
 	 * @var WRestResponse
 	 */
-	protected $_response = null;
+	public $response = null;
 	protected $_modelName = "";
 	protected $_availableFormats = array('json');
 
-	public function __construct($id, $module = null)
-	{
+	public function init(){
 		$this->_modelName = ucfirst($this->_modelName);
 
 		Yii::app()->setComponent('request', Yii::createComponent(array(
 					'class' => 'ext.wrest.WHttpRequest',
 				)));
 
-		Yii::app()->request->parseJsonParams();
-		Yii::app()->request->getAllRestParams();
+		$this->request->parseJsonParams();
+		$this->request->getAllRestParams();
 
 		$this->request->setFormat();
-		$this->_response = WRestResponse::factory($this->request->getFormat());
+		$this->response = WRestResponse::factory($this->request->getFormat());
 
-		parent::__construct($id, $module);
+		return parent::init();
 	}
 
 	/**
@@ -44,17 +43,17 @@ abstract class WRestController extends CController
 	public function sendResponse($status = 200, $bodyParams = array())
 	{
 		if ($status != 200) {
-			$bodyParams = CArray::merge($bodyParams, $this->_response->getErrorMessage($status));
+			$bodyParams = CArray::merge($bodyParams, $this->response->getErrorMessage($status));
 		}
-		$this->_response->setStatus($status);
+		$this->response->setStatus($status);
 		$this->sendHeaders();
-		echo $this->_response->setParams($bodyParams)->getBody();
+		echo $this->response->setParams($bodyParams)->getBody();
 		Yii::app()->end();
 	}
 
 	public function sendHeaders()
 	{
-		$headers = $this->_response->getHeaders();
+		$headers = $this->response->getHeaders();
 		foreach ($headers as $header){
 			header($header);
 		}
