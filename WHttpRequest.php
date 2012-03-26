@@ -55,7 +55,12 @@ class WHttpRequest extends CHttpRequest
 
 
 	public function parseJsonParams(){
-		if(isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/json'){
+		if(!isset($_SERVER['CONTENT_TYPE'])){
+			return $this->_restParams;
+		}
+		
+		$contentType = strtok($_SERVER['CONTENT_TYPE'], ';');
+		if($contentType == 'application/json'){
 			$requestBody = file_get_contents("php://input");
 			$this->_restParams = array_merge((array)json_decode($requestBody), $this->_restParams);
 		}
