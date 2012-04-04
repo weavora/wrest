@@ -17,10 +17,17 @@ class XmlResponse extends WRestResponse
 
 	public function setParams($params = array())
 	{
-		$keys = array_keys($params);
-		$rootNodeName = array_shift($keys);
-		$data = $params[$rootNodeName];
-		$this->_body = self::toXml($data, $rootNodeName);
+		// Associative single-valued array is treated as the root element
+		if (is_array($params) && count($params) == 1 && ($keys = array_keys($params)) && !is_numeric($keys[0])) //count($params) == 1 && ($keys = array_keys($params)) && !is_int($keys[0])
+		{
+			$xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><{$keys[0]} />");
+			$data = $params[$keys[0]];
+			$this->_body = self::toXml($data, null, $xml);
+		} else
+		{
+			$xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><response />");
+			$this->_body = self::toXml($params, null, $xml);
+		}
 		return $this;
 	}
 
@@ -33,15 +40,14 @@ class XmlResponse extends WRestResponse
 	 * @param SimpleXMLElement $xml - should only be used recursively
 	 * @return string XML
 	 */
-	public static function toXML($data, $rootNodeName = 'data', &$xml = null)
+	public static function toXML($data, $defaultKey = null, &$xml = null)
 	{
+
+		if (is_null($defaultKey)) $defaultKey = 'element';
 
 		// turn off compatibility mode as simple xml throws a wobbly if you don't.
 		if (ini_get('zend.ze1_compatibility_mode') == 1)
 			ini_set('zend.ze1_compatibility_mode', 0);
-
-		if (is_null($xml))
-			$xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><$rootNodeName />");
 
 		// loop through the data passed in.
 		foreach ($data as $key => $value)
@@ -51,7 +57,7 @@ class XmlResponse extends WRestResponse
 			if (is_numeric($key))
 			{
 				$numeric = 1;
-				$key = $rootNodeName;
+				$key = $defaultKey;
 			}
 
 			// delete any char not allowed in XML element names
