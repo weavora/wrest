@@ -75,7 +75,7 @@ class XmlResponse extends WRestResponse
 			{
 
 				// add single node.
-				$value = htmlentities($value);
+				$value = htmlspecialchars($value);
 				$xml->addChild($key, $value);
 			}
 		}
