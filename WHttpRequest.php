@@ -16,7 +16,7 @@ class WHttpRequest extends CHttpRequest
 	 */
 	private $_format = 'json';
 	private $_formatAttributeName = 'format';
-	protected $_availableFormats = array('json');
+	protected $_availableFormats = array('json','xml');
 
 	public function getPut($name, $defaultValue = null)
 	{
