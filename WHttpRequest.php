@@ -84,12 +84,12 @@ class WHttpRequest extends CHttpRequest
 			$name = '_'.$name;
 		}
 		$param = isset($_GET[$name]) ? $_GET[$name] : null;
-		if(!$param)
+		if(is_null($param))
 			$param = isset($_GET[$name]) ? $_GET[$name] : null;
-		if(!$param)
+		if(is_null($param))
 			$param = isset($this->_restParams[$name]) ? $this->_restParams[$name] : null;
 		
-		return $param ? $param : $defaultValue;
+		return !is_null($param) ? $param : $defaultValue;
 	}
 
 	public function setFormat($format = null)
