@@ -1,0 +1,27 @@
+{
+    "name": "weavora/wrest",
+    "description": "Yii extension to create REST CRUD interfaces (get, list, update, create, delete actions) for your app",
+    "keywords": ["yii", "rest", "api"],
+    "homepage": "https://github.com/weavora/wrest",
+    "type": "yii-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Slava Belokurski",
+            "email": "slavchoo2@gmail.com"
+        },
+        {
+            "name": "Fredrik Wollsén",
+            "email": "fredrik@neam.se"
+        }
+    ],
+    "require": {
+        "php": ">=5.0.0",
+        "yiisoft/yii": ">=1.1.0"
+    },
+    "autoload": {
+        "classmap": ["."]
+    },
+    "require-dev": {
+    }
+}
