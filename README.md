@@ -270,3 +270,19 @@ class UserController extends WRestController
 	}
 }
 ```
+
+Submitting bugs and feature requests
+------------------------------------
+
+Bugs and feature request are tracked on [GitHub](https://github.com/weavora/wrest/issues)
+
+Author
+------
+
+Weavora LLC - <http://weavora.com> - <http://twitter.com/weavora><br />
+See also the list of [contributors](https://github.com/weavora/wrest/contributors) which participated in this project.
+
+License
+-------
+
+This library is licensed under the MIT License - see the `LICENSE` file for details
