@@ -7,12 +7,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Slava Belokurski",
-            "email": "slavchoo2@gmail.com"
+            "name": "Weavora Team",
+            "email": "hello@weavora.com"
         },
         {
-            "name": "Fredrik Wollsén",
-            "email": "fredrik@neam.se"
+            "name": "Contributors",
+            "homepage": "https://github.com/weavora/wrest/graphs/contributors"
         }
     ],
     "require": {
