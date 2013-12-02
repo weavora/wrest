@@ -19,9 +19,6 @@
         "php": ">=5.0.0",
         "yiisoft/yii": ">=1.1.0"
     },
-    "autoload": {
-        "classmap": ["."]
-    },
     "require-dev": {
     }
 }
