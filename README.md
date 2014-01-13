@@ -1,22 +1,22 @@
 Yii Rest Extension
 ===================
 
-Extension organize REST API on Yii app 
+The extension organizes REST API in Yii app 
 
 [Weavora's](http://weavora.com) Git Repo - [https://github.com/weavora/wrest](https://github.com/weavora/wrest)
 
 **Features**:
 
 * Fast configuration
-* Provide simple REST CRUD interface (get, list, update, create, delete actions)
-* CRUD actions integrate with Model scenarios
+* Provides a simple REST CRUD interface (get, list, update, create, delete actions)
+* CRUD actions are integrated with Model scenarios
 
 Configuration
 -----
 
-1) Download and extract source into protected/extensions/ folder.
+1) Download and extract the source into the protected/extensions/ folder.
 
-2) There are config settings for import section below:
+2) There are config settings for the import section below:
 
 ```php
 <?php
@@ -74,14 +74,14 @@ class User extends CActiveRecord{
 }
 ```
 
-5) Create 'api' folder in /protected/controllers/. Here will be determined all your REST API controllers.
+5) Create an 'api' folder in /protected/controllers/. Here all your REST API controllers will be determined.
 
 6) Extend all your REST controlles from WRestController instead of Controller.
 
 Usage
 -----
 
-1) Create model, determine relations, behavior etc.
+1) Create a model, determine relations, behavior, etc.
 
 ```php
 <?php
@@ -118,7 +118,7 @@ class User extends CActiveRecord
 }
 ```
 
-2) Create controller in /protected/controllers/api folder, extend it's from WRestController and define allow rest actions
+2) Create a controller in the /protected/controllers/api folder, extend it from WRestController and define rest actions
 
 ```php
 <?php 
@@ -134,12 +134,12 @@ class UserController extends WRestController{
 		return array(
 			'list' => array( //use for get list of objects
 				'class' => 'WRestListAction',
-				'filterBy' => array( //this param user in `where` expression when forming an db query
+				'filterBy' => array( //this param used in `where` expression when forming an db query
 					'account_id' => 'account_id', // 'name_in_table' => 'request_param_name'
 				),
-				'limit' => 'limit', //request parameter name, which will contain limit of object
-				'page' => 'page', //request parameter name, which will contain requested page num
-				'order' => 'order', //request parameter name, which will contain ordering for sort
+				'limit' => 'limit', //request parameter name which will contain a limit of object
+				'page' => 'page', //request parameter name which will contain a requested page num
+				'order' => 'order', //request parameter name which will contain ordering for sort
 			),
 			'delete' => 'WRestDeleteAction',
 			'get' => 'WRestGetAction',
@@ -155,7 +155,7 @@ class UserController extends WRestController{
 REST API call samples
 =======================
 
-If you use RestClient class, then you can call api next way:
+If you use the RestClient class, then you can call api the following way:
 
 ```php
 <?php
@@ -165,7 +165,7 @@ require 'RestClient.php';
 $client = new RestClient('http://api_url/api/', '', '');
 
 $response = $client->get('user'); //return the list of objects {{id:1, username:'Jack'}, {id:2, username:'Nick'}}
-$response = $client->get('user/1'); //return single object with requested id, for example {id:1, username:'Jack'}
+$response = $client->get('user/1'); //return a single object with the requested id, for example {id:1, username:'Jack'}
 $response = $client->update('user/1', array('username' => 'new user name')); //update user data
 $response = $client->delete('user/1'); //delete user with requested id
 $response = $client->post('user', array('username'=>'name', 'password' => 'pass', 'email' => 'email@email.com'));//create new user
@@ -183,7 +183,7 @@ Custom action sample
 
 class UserController extends WRestController{
 
-	protected $_modelName = "user"; //model to be used as resource
+	protected $_modelName = "user"; //model to be used as a resource
 	
 	...
 	
@@ -207,10 +207,10 @@ class UserController extends WRestController{
 }
 ```
 
-Use with Access layer filter
+Use it with the Access layer filter
 -----------------
 
-For provide access layer for REST actions use [wacf](https://github.com/weavora/yii-wacf)
+For providing an access layer for REST actions use [wacf](https://github.com/weavora/yii-wacf)
 
 ```php
 <?php
@@ -280,7 +280,7 @@ Author
 ------
 
 Weavora LLC - <http://weavora.com> - <http://twitter.com/weavora><br />
-See also the list of [contributors](https://github.com/weavora/wrest/contributors) which participated in this project.
+Also see the list of [contributors](https://github.com/weavora/wrest/contributors) who've participated in this project.
 
 License
 -------
