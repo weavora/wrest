@@ -73,7 +73,7 @@ class XmlResponse extends WRestResponse
 			{
 				$node = self::is_assoc($value) || $numeric ? $xml->addChild($key) : $xml;
 
-				// recursive call.
+				// a recursive call.
 				if ($numeric)
 					$key = 'anon';
 				self::toXml($value, $key, $node);
