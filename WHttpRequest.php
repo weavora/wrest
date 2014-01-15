@@ -34,7 +34,7 @@ class WHttpRequest extends CHttpRequest
 
 
 	/**
-	 * return all posible params from request
+	 * return all posible params from a request
 	 * @return array()
 	 */
 	public function getAllRestParams($ignorInlineParams = false)
@@ -69,8 +69,8 @@ class WHttpRequest extends CHttpRequest
 
 	/**
 	 * Returns the named GET or POST parameter value.
-	 * If the GET or POST parameter does not exist, the second parameter to this method will be returned.
-	 * If both GET and POST contains such a named parameter, the GET parameter takes precedence.
+	 * If the GET or POST parameter does not exist, the second parameter for this method will be returned.
+	 * If both GET and POST contain such a named parameter, the GET parameter takes precedence.
 	 * @param string $name the GET parameter name
 	 * @param mixed $defaultValue the default parameter value if the GET parameter does not exist.
 	 * @return mixed the GET parameter value
@@ -98,7 +98,7 @@ class WHttpRequest extends CHttpRequest
 			$this->_format = $format;
 		}
 		if (!$this->_format) {
-			//get format from one of requests type
+			//get format from one of the request types
 			$format = Yii::app()->request->getParam($this->_formatAttributeName);
 			$format = (empty($format)) ? Yii::app()->request->getPut($this->_formatAttributeName) : $format;
 			$format = (empty($format)) ? Yii::app()->request->getDelete($this->_formatAttributeName) : $format;
