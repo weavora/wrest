@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This class is based on the JsonResponse class by Weavora Team and the code from various posters on http://snipplr.com/view/3491/
+ * This class is based on the JsonResponse class by Weavora Team and code from various posters on http://snipplr.com/view/3491/
  * 
  * @author Fredrik Wollsén <fredrik@neam.se>
  * @link http://neam.se
@@ -17,7 +17,7 @@ class XmlResponse extends WRestResponse
 
 	public function setParams($params = array())
 	{
-		// Associative single-valued array is treated as the root element
+		// An associative single-valued array is treated as a root element
 		if (is_array($params) && count($params) == 1 && ($keys = array_keys($params)) && !is_numeric($keys[0])) //count($params) == 1 && ($keys = array_keys($params)) && !is_int($keys[0])
 		{
 			$xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><{$keys[0]} />");
@@ -33,7 +33,7 @@ class XmlResponse extends WRestResponse
 
 	/**
 	 * The main function for converting to an XML document.
-	 * Pass in a multi dimensional array and this recrusively loops through and builds up an XML document.
+	 * Pass in a multi dimensional array and this recursively loops through and builds up an XML document.
 	 *
 	 * @param array $data
 	 * @param string $rootNodeName - what you want the root node to be - defaultsto data.
@@ -45,7 +45,7 @@ class XmlResponse extends WRestResponse
 
 		if (is_null($defaultKey)) $defaultKey = 'element';
 
-		// turn off compatibility mode as simple xml throws a wobbly if you don't.
+		// turn off the compatibility mode as simple xml throws a wobbly if you don't.
 		if (ini_get('zend.ze1_compatibility_mode') == 1)
 			ini_set('zend.ze1_compatibility_mode', 0);
 
@@ -60,7 +60,7 @@ class XmlResponse extends WRestResponse
 				$key = $defaultKey;
 			}
 
-			// delete any char not allowed in XML element names
+			// delete any characters not allowed in XML element names
 			$key = preg_replace('/[^a-z0-9\-\_\.\:]/i', '', $key);
 
 			if (is_object($value))
@@ -68,19 +68,19 @@ class XmlResponse extends WRestResponse
 				$value = get_object_vars($value);
 			}
 
-			// if there is another array found recrusively call this function
+			// if there is another array found recursively call this function
 			if (is_array($value))
 			{
 				$node = self::is_assoc($value) || $numeric ? $xml->addChild($key) : $xml;
 
-				// recrusive call.
+				// recursive call.
 				if ($numeric)
 					$key = 'anon';
 				self::toXml($value, $key, $node);
 			} else
 			{
 
-				// add single node.
+				// add a single node.
 				$value = htmlspecialchars($value);
 				$xml->addChild($key, $value);
 			}
@@ -89,7 +89,7 @@ class XmlResponse extends WRestResponse
 		// pass back as XML
 		//return $xml->asXML();
 		//
-		// if you want the XML to be formatted, use the below instead to return the XML
+		// if you want the XML to be formatted, use the below part instead to return the XML
 		$doc = new DOMDocument('1.0');
 		$doc->preserveWhiteSpace = false;
 		$doc->loadXML($xml->asXML());
@@ -99,7 +99,7 @@ class XmlResponse extends WRestResponse
 
 	/**
 	 * Convert an XML document to a multi dimensional array
-	 * Pass in an XML document (or SimpleXMLElement object) and this recrusively loops through and builds a representative array
+	 * Pass in an XML document (or SimpleXMLElement object) and this recursively loops through and builds a representative array
 	 *
 	 * @param string $xml - XML document - can optionally be a SimpleXMLElement object
 	 * @return array ARRAY
