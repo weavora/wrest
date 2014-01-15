@@ -7,7 +7,7 @@
  */
 
 /**
- * Simple client for testing
+ * A simple client for testing
  */
 class RestClient
 {
