@@ -43,17 +43,17 @@ abstract class WRestController extends CController
     /**
      * @desc
      * @param type $status
-     * @param string $body
+     * @param array $bodyParams the response body array (TODO: rename)
      * @param type $content_type
      */
-    public function sendResponse($status = 200, $bodyParams = array())
+    public function sendResponse($status = 200, $bodyParams = array(), $options = array())
     {
         if ($status != 200) {
             $bodyParams = CMap::mergeArray($bodyParams, $this->response->getErrorMessage($status));
         }
         $this->response->setStatus($status);
         $this->sendHeaders();
-        echo $this->response->setParams($bodyParams)->getBody();
+        echo $this->response->setParams($bodyParams, $options)->getBody();
         Yii::app()->end();
     }
 
