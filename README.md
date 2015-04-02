@@ -147,6 +147,7 @@ class UserController extends WRestController{
 			'update' => array(
 				'class' => 'WRestUpdateAction',
 				'scenario' => 'update', //as well as in WRestCreateAction optional param
+			),
 		);
 	}
 }
