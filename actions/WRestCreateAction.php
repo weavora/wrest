@@ -16,16 +16,7 @@ class WRestCreateAction extends CAction
 
         $model = $this->controller->getModel($this->scenario);
 
-        $paramsList = $model->getCreateAttributes();
-
-        $attributes = array();
-        foreach ($paramsList as $key) {
-            if (isset($requestAttributes[$key])) {
-                $attributes[$key] = $requestAttributes[$key];
-            }
-        }
-
-        $model->attributes = $attributes;
+        $model->setCreateAttributes($requestAttributes);
 
         if ($model->save()) {
             $this->controller->sendResponse(200, $model->getAllAttributes());

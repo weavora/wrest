@@ -37,4 +37,34 @@ class WRestModelBehavior extends CActiveRecordBehavior
         return $attributes;
     }
 
+    public function setCreateAttributes($requestAttributes)
+    {
+        $owner = $this->getOwner();
+        $paramsList = $owner->getCreateAttributes();
+
+        $attributes = array();
+        foreach ($paramsList as $key) {
+            if (isset($requestAttributes[$key])) {
+                $attributes[$key] = $requestAttributes[$key];
+            }
+        }
+
+        $owner->attributes = $attributes;
+    }
+
+    public function setUpdateAttributes($requestAttributes)
+    {
+        $owner = $this->getOwner();
+        $paramsList = $owner->getUpdateAttributes();
+
+        $attributes = array();
+        foreach ($paramsList as $key) {
+            if (isset($requestAttributes[$key])) {
+                $attributes[$key] = $requestAttributes[$key];
+            }
+        }
+
+        $owner->attributes = $attributes;
+    }
+
 }

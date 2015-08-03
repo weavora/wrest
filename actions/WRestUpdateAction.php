@@ -16,16 +16,7 @@ class WRestUpdateAction extends CAction
 
         $model = $this->controller->getModel($this->scenario);
 
-        $paramsList = $model->getUpdateAttributes();
-
-        $attributes = array();
-        foreach ($paramsList as $key) {
-            if (isset($requestAttributes[$key])) {
-                $attributes[$key] = $requestAttributes[$key];
-            }
-        }
-
-        $model->attributes = $attributes;
+        $model->setUpdateAttributes($requestAttributes);
 
         if ($model->save()) {
             $this->controller->sendResponse(200, $model->getAllAttributes());
