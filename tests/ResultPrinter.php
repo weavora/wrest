@@ -48,38 +48,38 @@ require_once 'PHP/Timer.php';
 
 class WUnit_ResultPrinter extends PHPUnit_TextUI_ResultPrinter
 {
-	protected $outputBuffer = "";
+    protected $outputBuffer = "";
 
-	public function __construct($out = NULL, $verbose = FALSE, $colors = FALSE, $debug = FALSE)
-	{
-		parent::__construct($out, $verbose, $colors, $debug);
-	}
+    public function __construct($out = null, $verbose = false, $colors = false, $debug = false)
+    {
+        parent::__construct($out, $verbose, $colors, $debug);
+    }
 
-	public function write($buffer)
-	{
-		if ($this->out) {
-			fwrite($this->out, $buffer);
+    public function write($buffer)
+    {
+        if ($this->out) {
+            fwrite($this->out, $buffer);
 
-			if ($this->autoFlush) {
-				$this->incrementalFlush();
-			}
-		} else {
-			if (PHP_SAPI != 'cli') {
-				$buffer = htmlspecialchars($buffer);
-			}
+            if ($this->autoFlush) {
+                $this->incrementalFlush();
+            }
+        } else {
+            if (PHP_SAPI != 'cli') {
+                $buffer = htmlspecialchars($buffer);
+            }
 
-			$this->outputBuffer .= $buffer;
+            $this->outputBuffer .= $buffer;
 
-			if ($this->autoFlush) {
-				$this->incrementalFlush();
-			}
-		}
-	}
+            if ($this->autoFlush) {
+                $this->incrementalFlush();
+            }
+        }
+    }
 
-	public function printResult(PHPUnit_Framework_TestResult $result)
+    public function printResult(PHPUnit_Framework_TestResult $result)
     {
 
-		parent::printResult($result);
-		print $this->outputBuffer;
-	}
+        parent::printResult($result);
+        print $this->outputBuffer;
+    }
 }
