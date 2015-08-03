@@ -3,11 +3,10 @@
 class TestController extends CController
 {
 
-	public function actionIndex()
-	{
-		Yii::app()->end(200);
-	}
-
+    public function actionIndex()
+    {
+        Yii::app()->end(200);
+    }
 
 
 }
